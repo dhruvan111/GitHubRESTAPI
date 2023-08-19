@@ -19,6 +19,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// GitHub Client
+	implementation 'org.kohsuke:github-api:1.123' // Check for the latest version
 }
 
 tasks.named('test') {
