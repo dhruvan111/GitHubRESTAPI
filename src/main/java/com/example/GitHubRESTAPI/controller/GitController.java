@@ -1,7 +1,7 @@
 package com.example.GitHubRESTAPI.controller;
 
-import com.example.GitHubRESTAPI.model.GitRepo;
-import com.example.GitHubRESTAPI.service.GitHubService;
+import com.example.GitHubRESTAPI.model.GitRepoDTO;
+import com.example.GitHubRESTAPI.service.GitHubServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,15 +15,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class GitController {
-    private final GitHubService gitHubService;
+    private final GitHubServiceImpl gitHubServiceImpl;
     @Autowired
-    public GitController(GitHubService gitHubService) {
-        this.gitHubService = gitHubService;
+    public GitController(GitHubServiceImpl gitHubServiceImpl) {
+        this.gitHubServiceImpl = gitHubServiceImpl;
     }
 
     @GetMapping("/repo/{username}")
-    public ResponseEntity<List<GitRepo>> getRepositories(@PathVariable String username) throws IOException {
-        List<GitRepo> repositories = gitHubService.getRepositories(username);
+    public ResponseEntity<List<GitRepoDTO>> getRepositories(@PathVariable String username) throws IOException {
+        List<GitRepoDTO> repositories = gitHubServiceImpl.getRepositories(username);
         return ResponseEntity.ok(repositories);
     }
 
