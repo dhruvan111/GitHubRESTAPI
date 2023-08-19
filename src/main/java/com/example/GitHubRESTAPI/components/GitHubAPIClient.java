@@ -12,15 +12,10 @@ import java.io.IOException;
 public class GitHubAPIClient {
 
     private final GitHub gitHub;
-
-    @Value("${github.token}")
-    private String accessToken;
-
     @Autowired
-    public GitHubAPIClient() throws IOException {
-        this.gitHub = new GitHubBuilder().withOAuthToken("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").build();
+    public GitHubAPIClient(@Value("${github.token}") String accessToken) throws IOException {
+        this.gitHub = new GitHubBuilder().withOAuthToken(accessToken).build();
     }
-
     public GitHub getGitHubClient(){
         return gitHub;
     }
