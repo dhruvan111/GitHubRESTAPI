@@ -1,4 +1,4 @@
-package com.example.GitHubRESTAPI.components;
+package com.example.GitHubRESTAPI.config.components;
 
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @Component
 public class GitHubAPIClient {
-
+    // Singleton design pattern
     private final GitHub gitHub;
     @Autowired
     public GitHubAPIClient(@Value("${github.token}") String accessToken) throws IOException {

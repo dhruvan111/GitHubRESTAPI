@@ -1,7 +1,7 @@
 package com.example.GitHubRESTAPI.controller;
 
 import com.example.GitHubRESTAPI.model.GitRepoDTO;
-import com.example.GitHubRESTAPI.service.GitHubServiceImpl;
+import com.example.GitHubRESTAPI.service.GitHubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,21 +15,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class GitController {
-    private final GitHubServiceImpl gitHubServiceImpl;
+    private final GitHubService gitHubService;
     @Autowired
-    public GitController(GitHubServiceImpl gitHubServiceImpl) {
-        this.gitHubServiceImpl = gitHubServiceImpl;
+    public GitController(GitHubService gitHubService) {
+        this.gitHubService = gitHubService;
     }
 
-    @GetMapping("/repo/{username}")
+    @GetMapping("/users/{username}/repo")
     public ResponseEntity<List<GitRepoDTO>> getRepositories(@PathVariable String username) throws IOException {
-        List<GitRepoDTO> repositories = gitHubServiceImpl.getRepositories(username);
+        List<GitRepoDTO> repositories = gitHubService.getRepositories(username);
         return ResponseEntity.ok(repositories);
     }
 
-    @GetMapping("/name")
-    public ResponseEntity<String> getName(){
+    @GetMapping("/users/{username}")
+    public ResponseEntity<String> getName(String username) throws IOException {
         String name = "Dhruvan";
+        gitHubService.getUserInfo(username);
         return ResponseEntity.ok(name);
     }
 }

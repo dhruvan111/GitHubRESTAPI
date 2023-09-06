@@ -9,4 +9,5 @@ import java.util.List;
 public interface GitHubService {
     List<GitRepoDTO> mapToGitRepoDTO(List<GHRepository> ghRepositoryList);
     List<GitRepoDTO> getRepositories(String username) throws IOException;
+    List<String> getUserInfo(String username) throws IOException;
 }
