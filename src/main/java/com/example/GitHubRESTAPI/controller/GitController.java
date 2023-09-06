@@ -33,11 +33,4 @@ public class GitController {
         GitHubUserDTO gitHubUserDTO = gitHubService.getUserInfo(username);
         return ResponseEntity.ok(gitHubUserDTO);
     }
-
-    @GetMapping("/users/{username}")
-    public ResponseEntity<String> getName(String username) throws IOException {
-        String name = "Dhruvan";
-        gitHubService.getUserInfo(username);
-        return ResponseEntity.ok(name);
-    }
 }

@@ -3,9 +3,7 @@ package com.example.GitHubRESTAPI.service;
 import com.example.GitHubRESTAPI.config.components.GitHubAPIClient;
 import com.example.GitHubRESTAPI.model.GitHubUserDTO;
 import com.example.GitHubRESTAPI.model.GitRepoDTO;
-import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GHUser;
-import org.kohsuke.github.GitHub;
+import org.kohsuke.github.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +26,7 @@ public class GitHubServiceImpl implements GitHubService{
     @Override
     public List<GitRepoDTO> mapToGitRepoDTO(List<GHRepository> ghRepositoryList){
 
+        // mapping GHRepo to our required content
         List<GitRepoDTO> gitRepoDTOList = new ArrayList<>();
         for (GHRepository repository:ghRepositoryList){
             GitRepoDTO gitRepoDTO = modelMapper.map(repository, GitRepoDTO.class);
@@ -53,13 +52,25 @@ public class GitHubServiceImpl implements GitHubService{
         GitHub gitHub = gitHubAPIClient.getGitHubClient();
         GHUser ghUser = gitHub.getUser(username);
 
-        System.out.println("User Name: " + ghUser.getName());
-        System.out.println("User Email: " + ghUser.getEmail());
-        System.out.println("User Location: " + ghUser.getLocation());
-        System.out.println("info :" + ghUser.getBio());
-        System.out.println(ghUser.listFollowers());
-        System.out.println(ghUser.getCompany());
+        // creating gitUser with username and filling it with essential info
+        GitHubUserDTO gitHubUserDTO = new GitHubUserDTO(ghUser.getId(), ghUser.getName(), ghUser.getEmail(), ghUser.getLocation(), ghUser.getBio(), ghUser.getCompany());
 
-        return modelMapper.map(ghUser, GitHubUserDTO.class);
+        // adding followers
+        PagedIterable<GHUser> ghUserPagedIterable = ghUser.listFollowers();
+        List<String> followersList = new ArrayList<>();
+        for (GHUser ghUser1:ghUserPagedIterable){
+            followersList.add(ghUser1.getName());
+        }
+        gitHubUserDTO.setFollowers(followersList);
+
+        // adding starred repos marked by ${username}
+        PagedIterable<GHRepository> pagedIterable = ghUser.listStarredRepositories();
+        List<String> starredRepoList = new ArrayList<>();
+        for (GHRepository ghRepository:pagedIterable){
+            starredRepoList.add(ghRepository.getName());
+        }
+        gitHubUserDTO.setStarredRepos(starredRepoList);
+
+        return gitHubUserDTO;
     }
 }

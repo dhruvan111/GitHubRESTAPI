@@ -1,9 +1,9 @@
 package com.example.GitHubRESTAPI.model;
 
-import org.kohsuke.github.GHUser;
-import org.kohsuke.github.PagedIterable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Document(collection = "users")
 public class GitHubUserDTO {
@@ -13,20 +13,20 @@ public class GitHubUserDTO {
     private String email;
     private String location;
     private String bio;
-    private PagedIterable<GHUser> followers;
+    private List<String> followers;
+    private List<String> starredRepos;
     private String company;
 
     public GitHubUserDTO() {
         // for ser & de-ser
     }
 
-    public GitHubUserDTO(long id, String name, String email, String location, String bio, PagedIterable<GHUser> followers, String company) {
+    public GitHubUserDTO(long id, String name, String email, String location, String bio, String company) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.location = location;
         this.bio = bio;
-        this.followers = followers;
         this.company = company;
     }
 
@@ -70,12 +70,20 @@ public class GitHubUserDTO {
         this.bio = bio;
     }
 
-    public PagedIterable<GHUser> getFollowers() {
+    public List<String> getFollowers() {
         return followers;
     }
 
-    public void setFollowers(PagedIterable<GHUser> followers) {
+    public void setFollowers(List<String> followers) {
         this.followers = followers;
+    }
+
+    public List<String> getStarredRepos() {
+        return starredRepos;
+    }
+
+    public void setStarredRepos(List<String> starredRepos) {
+        this.starredRepos = starredRepos;
     }
 
     public String getCompany() {
