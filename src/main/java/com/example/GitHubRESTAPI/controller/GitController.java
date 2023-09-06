@@ -1,5 +1,6 @@
 package com.example.GitHubRESTAPI.controller;
 
+import com.example.GitHubRESTAPI.model.GitHubUserDTO;
 import com.example.GitHubRESTAPI.model.GitRepoDTO;
 import com.example.GitHubRESTAPI.service.GitHubService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,12 @@ public class GitController {
     public ResponseEntity<List<GitRepoDTO>> getRepositories(@PathVariable String username) throws IOException {
         List<GitRepoDTO> repositories = gitHubService.getRepositories(username);
         return ResponseEntity.ok(repositories);
+    }
+
+    @GetMapping("/users/{username}/info")
+    public ResponseEntity<GitHubUserDTO> getUserInfo(@PathVariable String username) throws IOException {
+        GitHubUserDTO gitHubUserDTO = gitHubService.getUserInfo(username);
+        return ResponseEntity.ok(gitHubUserDTO);
     }
 
     @GetMapping("/users/{username}")

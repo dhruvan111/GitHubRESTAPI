@@ -1,6 +1,7 @@
 package com.example.GitHubRESTAPI.service;
 
 import com.example.GitHubRESTAPI.config.components.GitHubAPIClient;
+import com.example.GitHubRESTAPI.model.GitHubUserDTO;
 import com.example.GitHubRESTAPI.model.GitRepoDTO;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
@@ -48,10 +49,9 @@ public class GitHubServiceImpl implements GitHubService{
     }
 
     @Override
-    public List<String> getUserInfo(String username) throws IOException {
+    public GitHubUserDTO getUserInfo(String username) throws IOException {
         GitHub gitHub = gitHubAPIClient.getGitHubClient();
         GHUser ghUser = gitHub.getUser(username);
-
 
         System.out.println("User Name: " + ghUser.getName());
         System.out.println("User Email: " + ghUser.getEmail());
@@ -60,8 +60,6 @@ public class GitHubServiceImpl implements GitHubService{
         System.out.println(ghUser.listFollowers());
         System.out.println(ghUser.getCompany());
 
-
-        List<String> list = new ArrayList<>();
-        return list;
+        return modelMapper.map(ghUser, GitHubUserDTO.class);
     }
 }
