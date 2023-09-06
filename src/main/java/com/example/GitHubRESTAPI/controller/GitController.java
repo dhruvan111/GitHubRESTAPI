@@ -1,7 +1,8 @@
 package com.example.GitHubRESTAPI.controller;
 
 import com.example.GitHubRESTAPI.model.GitHubUserDTO;
-import com.example.GitHubRESTAPI.model.GitRepoDTO;
+import com.example.GitHubRESTAPI.model.GitRepoCommitDTO;
+import com.example.GitHubRESTAPI.model.GitRepoInfoDTO;
 import com.example.GitHubRESTAPI.service.GitHubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +24,8 @@ public class GitController {
     }
 
     @GetMapping("/users/{username}/repo")
-    public ResponseEntity<List<GitRepoDTO>> getRepositories(@PathVariable String username) throws IOException {
-        List<GitRepoDTO> repositories = gitHubService.getRepositories(username);
+    public ResponseEntity<List<GitRepoInfoDTO>> getRepositories(@PathVariable String username) throws IOException {
+        List<GitRepoInfoDTO> repositories = gitHubService.getRepositories(username);
         return ResponseEntity.ok(repositories);
     }
 
@@ -32,5 +33,11 @@ public class GitController {
     public ResponseEntity<GitHubUserDTO> getUserInfo(@PathVariable String username) throws IOException {
         GitHubUserDTO gitHubUserDTO = gitHubService.getUserInfo(username);
         return ResponseEntity.ok(gitHubUserDTO);
+    }
+
+    @GetMapping("/users/{owner-name}/{repoName}/commits")
+    public ResponseEntity<List<GitRepoCommitDTO>> getCommitInfo(@PathVariable("owner-name") String ownerName, @PathVariable("repoName") String repoName) throws IOException {
+        List<GitRepoCommitDTO> gitRepoCommitDTOList = gitHubService.getCommitInfo(ownerName, repoName);
+        return ResponseEntity.ok(gitRepoCommitDTOList);
     }
 }

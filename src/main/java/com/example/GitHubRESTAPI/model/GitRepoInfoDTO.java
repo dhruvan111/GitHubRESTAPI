@@ -3,7 +3,7 @@ package com.example.GitHubRESTAPI.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "repos")
-public class GitRepoDTO {
+public class GitRepoInfoDTO {
     @Id
     private long id;
     private String owner;
@@ -11,11 +11,11 @@ public class GitRepoDTO {
     private String description;
     private String language;
 
-    public GitRepoDTO() {
+    public GitRepoInfoDTO() {
         // for ser & de-ser
     }
 
-    public GitRepoDTO(long id, String owner, String name, String description, String language) {
+    public GitRepoInfoDTO(long id, String owner, String name, String description, String language) {
         this.id = id;
         this.owner = owner;
         this.name = name;
