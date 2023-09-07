@@ -2,7 +2,10 @@ package com.example.GitHubRESTAPI.service.dtoservice;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+@Component
 public class DTOConverterImpl implements DTOConverter {
     private final ModelMapper modelMapper;
     @Autowired

@@ -21,8 +21,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// GitHub Client
-	implementation 'org.kohsuke:github-api:1.123' // Check for the latest version
-	implementation 'org.modelmapper:modelmapper:2.4.4' // Replace with the latest version
+	implementation 'org.kohsuke:github-api:1.123'
+	implementation 'org.modelmapper:modelmapper:2.4.4'
+
+	// caching lib
+	implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.6'
 }
 
 tasks.named('test') {
