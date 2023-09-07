@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Document(collection = "users")
-public class GitHubUserDTO {
+public class GitUser {
     @Id
     private long id;
     private String name;
@@ -17,11 +17,11 @@ public class GitHubUserDTO {
     private List<String> starredRepos;
     private String company;
 
-    public GitHubUserDTO() {
+    public GitUser() {
         // for ser & de-ser
     }
 
-    public GitHubUserDTO(long id, String name, String email, String location, String bio, String company) {
+    public GitUser(long id, String name, String email, String location, String bio, String company) {
         this.id = id;
         this.name = name;
         this.email = email;

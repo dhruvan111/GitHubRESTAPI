@@ -1,7 +1,13 @@
-package com.example.GitHubRESTAPI.service;
+package com.example.GitHubRESTAPI.service.gitAPIservice;
 
+import com.example.GitHubRESTAPI.DTO.GitBranchInfoDTO;
+import com.example.GitHubRESTAPI.DTO.GitRepoCommitDTO;
+import com.example.GitHubRESTAPI.DTO.GitRepoInfoDTO;
+import com.example.GitHubRESTAPI.DTO.GitUserDTO;
 import com.example.GitHubRESTAPI.config.components.GitHubAPIClient;
 import com.example.GitHubRESTAPI.model.*;
+import com.example.GitHubRESTAPI.model.GitUser;
+import com.example.GitHubRESTAPI.service.dtoservice.DTOConverter;
 import org.kohsuke.github.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,26 +19,25 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class GitHubServiceImpl implements GitHubService{
+public class GitHubServiceImpl implements GitHubService {
     private final GitHub gitHub;
-    private final ModelMapper modelMapper;
+    private final DTOConverter dtoConverter;
 
     @Autowired
-    public GitHubServiceImpl(GitHubAPIClient gitHubAPIClient, ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
+    public GitHubServiceImpl(GitHubAPIClient gitHubAPIClient, ModelMapper modelMapper, DTOConverter dtoConverter) {
         this.gitHub = gitHubAPIClient.getGitHubClient();
+        this.dtoConverter = dtoConverter;
     }
 
-    @Override
-    public List<GitRepoInfoDTO> mapToGitRepoDTO(List<GHRepository> ghRepositoryList){
+    public List<GitRepoInfo> getRepoModel(List<GHRepository> ghRepositoryList){
 
         // mapping GHRepo to our required content
-        List<GitRepoInfoDTO> gitRepoInfoDTOList = new ArrayList<>();
+        List<GitRepoInfo> gitRepoInfoList = new ArrayList<>();
         for (GHRepository repository:ghRepositoryList){
-            GitRepoInfoDTO gitRepoInfoDTO = modelMapper.map(repository, GitRepoInfoDTO.class);
-            gitRepoInfoDTOList.add(gitRepoInfoDTO);
+            GitRepoInfo gitRepoInfoDTO = dtoConverter.convertToDTO(repository, GitRepoInfo.class);
+            gitRepoInfoList.add(gitRepoInfoDTO);
         }
-        return gitRepoInfoDTOList;
+        return gitRepoInfoList;
     }
 
     private List<GHRepository> getRepoByUsername(String username) throws IOException {
@@ -47,7 +52,14 @@ public class GitHubServiceImpl implements GitHubService{
     @Override
     public List<GitRepoInfoDTO> getRepositories(String username) throws IOException {
         List<GHRepository> repositories = getRepoByUsername(username);
-        return mapToGitRepoDTO(repositories);
+        List<GitRepoInfo> gitRepoInfoList = getRepoModel(repositories);
+
+        List<GitRepoInfoDTO> gitRepoInfoDTOS = new ArrayList<>();
+        for (GitRepoInfo gitRepoInfo : gitRepoInfoList){
+            GitRepoInfoDTO gitRepoInfoDTO = dtoConverter.convertToDTO(gitRepoInfo, GitRepoInfoDTO.class);
+            gitRepoInfoDTOS.add(gitRepoInfoDTO);
+        }
+        return gitRepoInfoDTOS;
     }
 
     private List<String> getFollowersList(GHUser ghUser) throws IOException {
@@ -71,29 +83,36 @@ public class GitHubServiceImpl implements GitHubService{
     }
 
     @Override
-    public GitHubUserDTO getUserInfo(String username) throws IOException {
+    public GitUserDTO getUserInfo(String username) throws IOException {
         GHUser ghUser = gitHub.getUser(username);
 
-        // creating gitUser with username and filling it with essential info
-        GitHubUserDTO gitHubUserDTO = new GitHubUserDTO(ghUser.getId(), ghUser.getName(), ghUser.getEmail(), ghUser.getLocation(), ghUser.getBio(), ghUser.getCompany());
+        // creating gitUser with username and filling it with essential info in model class
+        GitUser gitUser = new GitUser(ghUser.getId(), ghUser.getName(), ghUser.getEmail(), ghUser.getLocation(), ghUser.getBio(), ghUser.getCompany());
 
         List<String> followersList = getFollowersList(ghUser);
-        gitHubUserDTO.setFollowers(followersList);
+        gitUser.setFollowers(followersList);
 
         List<String> starredRepoList = getStarredRepoList(ghUser);
-        gitHubUserDTO.setStarredRepos(starredRepoList);
+        gitUser.setStarredRepos(starredRepoList);
 
-        return gitHubUserDTO;
+        return dtoConverter.convertToDTO(gitUser, GitUserDTO.class);
     }
 
     @Override
     public List<GitRepoCommitDTO> getCommitInfo(String ownerName, String repoName) throws IOException {
         GHRepository ghRepository = gitHub.getRepository(ownerName + "/" + repoName);
 
-        List<GitRepoCommitDTO> gitRepoCommitDTOList = new ArrayList<>();
+        // storing in model class
+        List<GitRepoCommit> gitRepoCommits = new ArrayList<>();
         for (GHCommit commit:ghRepository.listCommits()){
-            GitRepoCommitDTO gitRepoCommitDTO = new GitRepoCommitDTO(commit.getSHA1(), commit.getAuthor().getName(), commit.getCommitShortInfo().getMessage(), commit.getCommitDate());
-            gitRepoCommitDTOList.add(gitRepoCommitDTO);
+            GitRepoCommit gitRepoCommit = new GitRepoCommit(commit.getSHA1(), commit.getAuthor().getName(), commit.getCommitShortInfo().getMessage(), commit.getCommitDate());
+            gitRepoCommits.add(gitRepoCommit);
+        }
+
+        // converting to DTO
+        List<GitRepoCommitDTO> gitRepoCommitDTOList = new ArrayList<>();
+        for (GitRepoCommit gitRepoCommit:gitRepoCommits){
+            gitRepoCommitDTOList.add(dtoConverter.convertToDTO(gitRepoCommit, GitRepoCommitDTO.class));
         }
         return gitRepoCommitDTOList;
     }
@@ -104,15 +123,19 @@ public class GitHubServiceImpl implements GitHubService{
         Map<String, GHBranch> ghBranchMap = ghRepository.getBranches();
 
         int count = ghBranchMap.size();
-        GitBranchInfoDTO gitBranchInfoDTO = new GitBranchInfoDTO();
-        gitBranchInfoDTO.setBranchCount(count);
+
+        // storing all info in model class
+        GitBranchInfo gitBranchInfo = new GitBranchInfo();
+        gitBranchInfo.setBranchCount(count);
 
         List<Branch> branchList = new ArrayList<>();
         for (Map.Entry<String, GHBranch> entry:ghBranchMap.entrySet()){
             Branch branch = new Branch(entry.getValue().getName());
             branchList.add(branch);
         }
-        gitBranchInfoDTO.setBranchList(branchList);
-        return gitBranchInfoDTO;
+        gitBranchInfo.setBranchList(branchList);
+
+        // converting to DTO
+        return dtoConverter.convertToDTO(gitBranchInfo, GitBranchInfoDTO.class);
     }
 }

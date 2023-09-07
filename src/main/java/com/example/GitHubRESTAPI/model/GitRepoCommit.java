@@ -6,18 +6,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 
 @Document(collection = "commits")
-public class GitRepoCommitDTO {
+public class GitRepoCommit {
     @Id
     private String id;
     private String authorName;
     private String message;
     private Date date;
 
-    public GitRepoCommitDTO() {
+    public GitRepoCommit() {
         // for ser & de-ser
     }
 
-    public GitRepoCommitDTO(String id, String authorName, String message, Date date) {
+    public GitRepoCommit(String id, String authorName, String message, Date date) {
         this.id = id;
         this.authorName = authorName;
         this.message = message;

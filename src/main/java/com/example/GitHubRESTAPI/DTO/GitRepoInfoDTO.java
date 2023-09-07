@@ -1,10 +1,6 @@
-package com.example.GitHubRESTAPI.model;
+package com.example.GitHubRESTAPI.DTO;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-@Document(collection = "repos")
 public class GitRepoInfoDTO {
-    @Id
     private long id;
     private String owner;
     private String name;

@@ -1,10 +1,10 @@
 package com.example.GitHubRESTAPI.controller;
 
-import com.example.GitHubRESTAPI.model.GitBranchInfoDTO;
-import com.example.GitHubRESTAPI.model.GitHubUserDTO;
-import com.example.GitHubRESTAPI.model.GitRepoCommitDTO;
-import com.example.GitHubRESTAPI.model.GitRepoInfoDTO;
-import com.example.GitHubRESTAPI.service.GitHubService;
+import com.example.GitHubRESTAPI.DTO.GitBranchInfoDTO;
+import com.example.GitHubRESTAPI.DTO.GitUserDTO;
+import com.example.GitHubRESTAPI.DTO.GitRepoCommitDTO;
+import com.example.GitHubRESTAPI.DTO.GitRepoInfoDTO;
+import com.example.GitHubRESTAPI.service.gitAPIservice.GitHubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,9 +31,9 @@ public class GitController {
     }
 
     @GetMapping("/users/{username}/info")
-    public ResponseEntity<GitHubUserDTO> getUserInfo(@PathVariable String username) throws IOException {
-        GitHubUserDTO gitHubUserDTO = gitHubService.getUserInfo(username);
-        return ResponseEntity.ok(gitHubUserDTO);
+    public ResponseEntity<GitUserDTO> getUserInfo(@PathVariable String username) throws IOException {
+        GitUserDTO gitUserDTO = gitHubService.getUserInfo(username);
+        return ResponseEntity.ok(gitUserDTO);
     }
 
     @GetMapping("/users/{owner-name}/{repoName}/commits")

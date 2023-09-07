@@ -5,15 +5,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Document(collection = "branches")
-public class GitBranchInfoDTO {
+public class GitBranchInfo {
     private int branchCount;
     private List<Branch> branchList;
 
-    public GitBranchInfoDTO() {
+    public GitBranchInfo() {
         // for ser & de-ser
     }
 
-    public GitBranchInfoDTO(int branchCount, List<Branch> branchList) {
+    public GitBranchInfo(int branchCount, List<Branch> branchList) {
         this.branchCount = branchCount;
         this.branchList = branchList;
     }
