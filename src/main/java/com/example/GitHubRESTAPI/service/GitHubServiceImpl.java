@@ -1,9 +1,7 @@
 package com.example.GitHubRESTAPI.service;
 
 import com.example.GitHubRESTAPI.config.components.GitHubAPIClient;
-import com.example.GitHubRESTAPI.model.GitHubUserDTO;
-import com.example.GitHubRESTAPI.model.GitRepoCommitDTO;
-import com.example.GitHubRESTAPI.model.GitRepoInfoDTO;
+import com.example.GitHubRESTAPI.model.*;
 import org.kohsuke.github.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,12 +99,20 @@ public class GitHubServiceImpl implements GitHubService{
     }
 
     @Override
-    public void getBranchInfo(String ownerName,String repoName) throws IOException {
+    public GitBranchInfoDTO getBranchInfo(String ownerName,String repoName) throws IOException {
         GHRepository ghRepository = gitHub.getRepository(ownerName + "/" + repoName);
         Map<String, GHBranch> ghBranchMap = ghRepository.getBranches();
+
+        int count = ghBranchMap.size();
+        GitBranchInfoDTO gitBranchInfoDTO = new GitBranchInfoDTO();
+        gitBranchInfoDTO.setBranchCount(count);
+
+        List<Branch> branchList = new ArrayList<>();
         for (Map.Entry<String, GHBranch> entry:ghBranchMap.entrySet()){
-            System.out.println("branch Name: " + entry.getKey());
-            System.out.println("Branch commit " + entry.getValue().getName());
+            Branch branch = new Branch(entry.getValue().getName());
+            branchList.add(branch);
         }
+        gitBranchInfoDTO.setBranchList(branchList);
+        return gitBranchInfoDTO;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.GitHubRESTAPI.controller;
 
+import com.example.GitHubRESTAPI.model.GitBranchInfoDTO;
 import com.example.GitHubRESTAPI.model.GitHubUserDTO;
 import com.example.GitHubRESTAPI.model.GitRepoCommitDTO;
 import com.example.GitHubRESTAPI.model.GitRepoInfoDTO;
@@ -38,7 +39,12 @@ public class GitController {
     @GetMapping("/users/{owner-name}/{repoName}/commits")
     public ResponseEntity<List<GitRepoCommitDTO>> getCommitInfo(@PathVariable("owner-name") String ownerName, @PathVariable("repoName") String repoName) throws IOException {
         List<GitRepoCommitDTO> gitRepoCommitDTOList = gitHubService.getCommitInfo(ownerName, repoName);
-        gitHubService.getBranchInfo(ownerName, repoName);
         return ResponseEntity.ok(gitRepoCommitDTOList);
+    }
+
+    @GetMapping("/users/{owner-name}/{repoName}/branches")
+    public ResponseEntity<GitBranchInfoDTO> getBranchInfo(@PathVariable("owner-name") String ownerName, @PathVariable("repoName") String repoName) throws IOException {
+        GitBranchInfoDTO gitBranchInfoDTO = gitHubService.getBranchInfo(ownerName, repoName);
+        return ResponseEntity.ok(gitBranchInfoDTO);
     }
 }
