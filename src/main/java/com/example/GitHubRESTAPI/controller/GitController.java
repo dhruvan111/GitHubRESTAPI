@@ -38,6 +38,7 @@ public class GitController {
     @GetMapping("/users/{owner-name}/{repoName}/commits")
     public ResponseEntity<List<GitRepoCommitDTO>> getCommitInfo(@PathVariable("owner-name") String ownerName, @PathVariable("repoName") String repoName) throws IOException {
         List<GitRepoCommitDTO> gitRepoCommitDTOList = gitHubService.getCommitInfo(ownerName, repoName);
+        gitHubService.getBranchInfo(ownerName, repoName);
         return ResponseEntity.ok(gitRepoCommitDTOList);
     }
 }

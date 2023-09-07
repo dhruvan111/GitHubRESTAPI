@@ -13,4 +13,5 @@ public interface GitHubService {
     List<GitRepoInfoDTO> getRepositories(String username) throws IOException;
     GitHubUserDTO getUserInfo(String username) throws IOException;
     List<GitRepoCommitDTO> getCommitInfo(String ownerName, String repoName) throws IOException;
+    void getBranchInfo(String ownerName, String repoName) throws IOException;
 }

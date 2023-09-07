@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class GitHubServiceImpl implements GitHubService{
@@ -97,5 +98,15 @@ public class GitHubServiceImpl implements GitHubService{
             gitRepoCommitDTOList.add(gitRepoCommitDTO);
         }
         return gitRepoCommitDTOList;
+    }
+
+    @Override
+    public void getBranchInfo(String ownerName,String repoName) throws IOException {
+        GHRepository ghRepository = gitHub.getRepository(ownerName + "/" + repoName);
+        Map<String, GHBranch> ghBranchMap = ghRepository.getBranches();
+        for (Map.Entry<String, GHBranch> entry:ghBranchMap.entrySet()){
+            System.out.println("branch Name: " + entry.getKey());
+            System.out.println("Branch commit " + entry.getValue().getName());
+        }
     }
 }
