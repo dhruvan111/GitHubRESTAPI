@@ -1,11 +1,10 @@
 package com.example.GitHubRESTAPI.controller;
 
 import com.example.GitHubRESTAPI.DTO.GitBranchInfoDTO;
-import com.example.GitHubRESTAPI.DTO.GitUserDTO;
 import com.example.GitHubRESTAPI.DTO.GitRepoCommitDTO;
 import com.example.GitHubRESTAPI.DTO.GitRepoInfoDTO;
+import com.example.GitHubRESTAPI.DTO.GitUserDTO;
 import com.example.GitHubRESTAPI.service.cachingservice.CacheManager;
-import com.example.GitHubRESTAPI.service.gitAPIservice.GitHubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
