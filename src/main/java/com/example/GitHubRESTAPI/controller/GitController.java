@@ -4,6 +4,7 @@ import com.example.GitHubRESTAPI.DTO.GitBranchInfoDTO;
 import com.example.GitHubRESTAPI.DTO.GitUserDTO;
 import com.example.GitHubRESTAPI.DTO.GitRepoCommitDTO;
 import com.example.GitHubRESTAPI.DTO.GitRepoInfoDTO;
+import com.example.GitHubRESTAPI.service.cachingservice.CacheManager;
 import com.example.GitHubRESTAPI.service.gitAPIservice.GitHubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,33 +19,38 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class GitController {
-    private final GitHubService gitHubService;
+    private final CacheManager cacheManager;
+
     @Autowired
-    public GitController(GitHubService gitHubService) {
-        this.gitHubService = gitHubService;
+    public GitController(CacheManager cacheManager) {
+        this.cacheManager = cacheManager;
     }
 
     @GetMapping("/users/{username}/repo")
     public ResponseEntity<List<GitRepoInfoDTO>> getRepositories(@PathVariable String username) throws IOException {
-        List<GitRepoInfoDTO> repositories = gitHubService.getRepositories(username);
-        return ResponseEntity.ok(repositories);
+
+        List<GitRepoInfoDTO> repoInfoDTOList = cacheManager.getCachedRepoInfo(username);
+        return ResponseEntity.ok(repoInfoDTOList);
     }
 
     @GetMapping("/users/{username}/info")
     public ResponseEntity<GitUserDTO> getUserInfo(@PathVariable String username) throws IOException {
-        GitUserDTO gitUserDTO = gitHubService.getUserInfo(username);
+
+        GitUserDTO gitUserDTO = cacheManager.getCachedUser(username);
         return ResponseEntity.ok(gitUserDTO);
     }
 
     @GetMapping("/users/{owner-name}/{repoName}/commits")
     public ResponseEntity<List<GitRepoCommitDTO>> getCommitInfo(@PathVariable("owner-name") String ownerName, @PathVariable("repoName") String repoName) throws IOException {
-        List<GitRepoCommitDTO> gitRepoCommitDTOList = gitHubService.getCommitInfo(ownerName, repoName);
-        return ResponseEntity.ok(gitRepoCommitDTOList);
+
+        List<GitRepoCommitDTO> gitRepoCommitDTOS = cacheManager.getCachedRepoCommits(ownerName, repoName);
+        return ResponseEntity.ok(gitRepoCommitDTOS);
     }
 
     @GetMapping("/users/{owner-name}/{repoName}/branches")
     public ResponseEntity<GitBranchInfoDTO> getBranchInfo(@PathVariable("owner-name") String ownerName, @PathVariable("repoName") String repoName) throws IOException {
-        GitBranchInfoDTO gitBranchInfoDTO = gitHubService.getBranchInfo(ownerName, repoName);
+
+        GitBranchInfoDTO gitBranchInfoDTO = cacheManager.getCachedBranchInfo(ownerName, repoName);
         return ResponseEntity.ok(gitBranchInfoDTO);
     }
 }
