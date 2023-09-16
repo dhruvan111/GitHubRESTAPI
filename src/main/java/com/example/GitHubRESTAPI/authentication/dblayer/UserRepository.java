@@ -1,6 +1,6 @@
 package com.example.GitHubRESTAPI.authentication.dblayer;
 
-import com.example.GitHubRESTAPI.authentication.entity.User;
+import com.example.GitHubRESTAPI.authentication.entity.users.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
