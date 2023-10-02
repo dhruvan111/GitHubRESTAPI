@@ -24,6 +24,9 @@ dependencies {
 	implementation group: 'org.springframework.security', name: 'spring-security-config', version: '6.1.2'
 	implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: '5.0.0.M3'
 
+	// jwt
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
 	// GitHub Client
 	implementation 'org.kohsuke:github-api:1.123'
 	implementation 'org.modelmapper:modelmapper:2.4.4'
