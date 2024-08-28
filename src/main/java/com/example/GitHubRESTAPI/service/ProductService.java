@@ -1,5 +1,6 @@
 package com.example.GitHubRESTAPI.service;
 
+import com.example.GitHubRESTAPI.exception.ProductNotFoundException;
 import com.example.GitHubRESTAPI.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -20,7 +21,11 @@ public class ProductService {
     }
 
     public Product getProductById(String productId) {
-        return mongoTemplate.findById(productId, Product.class);
+        Product product = mongoTemplate.findById(productId, Product.class);
+        if (product == null) {
+            throw new ProductNotFoundException("Product NOT found with ID: " + productId);
+        }
+        return product;
     }
 
     public List<Product> getAllProducts() {

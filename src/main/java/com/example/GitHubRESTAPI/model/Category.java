@@ -1,14 +1,12 @@
 package com.example.GitHubRESTAPI.model;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "categories")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class Category {
     @Id

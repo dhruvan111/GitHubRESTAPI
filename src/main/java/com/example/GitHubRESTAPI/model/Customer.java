@@ -4,19 +4,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection = "products")
+import java.util.List;
+
+@Document
 @Data
 @NoArgsConstructor
-public class Product {
+public class Customer {
     @Id
     private String id;
 
-    private String name;
-    private String description;
-    private double price;
-
-    @Field("category_id")
-    private String categoryId;
+    private List<Order> orders;
 }
