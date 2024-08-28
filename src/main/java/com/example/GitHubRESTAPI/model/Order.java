@@ -7,18 +7,23 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection = "products")
+import java.util.Date;
+import java.util.List;
+
+@Document("orders")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Product {
+public class Order {
     @Id
     private String id;
 
-    private String name;
-    private String description;
-    private double price;
+    @Field("order_date")
+    private Date orderDate;
 
-    @Field("category_id")
-    private String categoryId;
+    @Field("total_amount")
+    private double totalAmount;
+
+    @Field("order_products")
+    private List<OrderProduct> orderProducts;
 }

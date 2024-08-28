@@ -5,20 +5,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection = "products")
+@Document(collection = "categories")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Product {
+public class Category {
     @Id
     private String id;
 
     private String name;
     private String description;
-    private double price;
-
-    @Field("category_id")
-    private String categoryId;
 }
