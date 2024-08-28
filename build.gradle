@@ -20,7 +20,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	// lombok
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
+
+	// For mongoDB
+	implementation group: 'org.springframework.data', name: 'spring-data-mongodb', version: '4.3.1'
 }
 
 tasks.named('test') {
