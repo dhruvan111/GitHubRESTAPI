@@ -1,7 +1,9 @@
 package com.example.GitHubRESTAPI.service;
 
 import com.example.GitHubRESTAPI.exception.ProductNotFoundException;
+import com.example.GitHubRESTAPI.model.Category;
 import com.example.GitHubRESTAPI.model.Product;
+import com.sun.jdi.event.StepEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -32,6 +34,18 @@ public class ProductService {
         return mongoTemplate.findAll(Product.class);
     }
 
+    public List<Product> getProductsByCategory(String categoryId) {
+        Query query = new Query(Criteria.where("category_id").is(categoryId));
+        return mongoTemplate.find(query, Product.class);
+    }
+
+    public List<Product> getProductsByCategoryName(String categoryName) {
+        Query query1 = new Query(Criteria.where("name").is(categoryName));
+        List<Category> categories = mongoTemplate.find(query1, Category.class);
+        Category category = categories.get(0);
+        return getProductsByCategory(category.getId());
+    }
+
     public Product saveProduct(Product product) {
         return mongoTemplate.save(product);
     }
@@ -43,10 +57,5 @@ public class ProductService {
             return true;
         }
         return false;
-    }
-
-    public List<Product> getProductsByCategory(String categoryId) {
-        Query query = new Query(Criteria.where("category_id").is(categoryId));
-        return mongoTemplate.find(query, Product.class);
     }
 }
