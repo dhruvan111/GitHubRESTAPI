@@ -3,7 +3,6 @@ package com.example.GitHubRESTAPI.service;
 import com.example.GitHubRESTAPI.exception.ProductNotFoundException;
 import com.example.GitHubRESTAPI.model.Category;
 import com.example.GitHubRESTAPI.model.Product;
-import com.sun.jdi.event.StepEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;

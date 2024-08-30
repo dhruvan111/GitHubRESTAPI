@@ -20,6 +20,11 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> testingEndPoint() {
+        return ResponseEntity.ok("Server running...");
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Product> findProductById(@PathVariable String id) {
         Product product = productService.getProductById(id);

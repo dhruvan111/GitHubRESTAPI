@@ -20,6 +20,11 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> testingEndPoint() {
+        return ResponseEntity.ok("Server running...");
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
         return ResponseEntity.ok(orderService.createOrder(order));
