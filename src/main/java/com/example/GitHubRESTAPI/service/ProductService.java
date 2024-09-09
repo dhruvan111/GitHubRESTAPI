@@ -3,6 +3,7 @@ package com.example.GitHubRESTAPI.service;
 import com.example.GitHubRESTAPI.exception.ProductNotFoundException;
 import com.example.GitHubRESTAPI.model.Category;
 import com.example.GitHubRESTAPI.model.Product;
+import com.example.GitHubRESTAPI.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -14,11 +15,13 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public ProductService(MongoTemplate mongoTemplate) {
+    public ProductService(MongoTemplate mongoTemplate, ProductRepository productRepository) {
         this.mongoTemplate = mongoTemplate;
+        this.productRepository = productRepository;
     }
 
     public Product getProductById(String productId) {
@@ -30,7 +33,7 @@ public class ProductService {
     }
 
     public List<Product> getAllProducts() {
-        return mongoTemplate.findAll(Product.class);
+        return productRepository.findAll();
     }
 
     public List<Product> getProductsByCategory(String categoryId) {
@@ -46,7 +49,7 @@ public class ProductService {
     }
 
     public Product saveProduct(Product product) {
-        return mongoTemplate.save(product);
+        return productRepository.save(product);
     }
 
     public boolean deleteProductById(String id) {

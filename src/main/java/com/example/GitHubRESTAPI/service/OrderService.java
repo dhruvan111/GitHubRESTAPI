@@ -3,6 +3,7 @@ package com.example.GitHubRESTAPI.service;
 import com.example.GitHubRESTAPI.exception.OrderNotFound;
 import com.example.GitHubRESTAPI.model.Order;
 import com.example.GitHubRESTAPI.model.OrderProduct;
+import com.example.GitHubRESTAPI.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -11,14 +12,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
+
     private final MongoTemplate mongoTemplate;
+    private final OrderRepository orderRepository;
 
     @Autowired
-    public OrderService(MongoTemplate mongoTemplate) {
+    public OrderService(MongoTemplate mongoTemplate, OrderRepository orderRepository) {
         this.mongoTemplate = mongoTemplate;
+        this.orderRepository = orderRepository;
     }
 
     public Order createOrder(Order order) {
@@ -39,8 +44,8 @@ public class OrderService {
         return mongoTemplate.save(order);
     }
 
-    public Order getOrderById(String id) {
-        return mongoTemplate.findById(id, Order.class);
+    public Optional<Order> getOrderById(String id) {
+        return orderRepository.findById(id);
     }
 
     public List<Order> getOrdersByCustomerId(String id) {

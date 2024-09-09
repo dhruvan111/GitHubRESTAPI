@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/order")
@@ -36,7 +37,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrderById(@PathVariable(name = "id") String orderId) {
+    public ResponseEntity<Optional<Order>> getOrderById(@PathVariable(name = "id") String orderId) {
         return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 
