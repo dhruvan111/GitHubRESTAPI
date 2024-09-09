@@ -16,9 +16,15 @@ repositories {
 }
 
 dependencies {
+	// database
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+	// spring-boot
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// Test
+	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.25.3'
 
 	// lombok
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
